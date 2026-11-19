@@ -30,7 +30,7 @@ function getOrders() {
     },
     {
       id: 1002,
-      customerId: "C002",
+      customerId: "C001",
       coupon: "FIVEOFF",
       items: [
         { productId: "P102", quantity: 10 },

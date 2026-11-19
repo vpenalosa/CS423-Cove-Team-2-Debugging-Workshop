@@ -1,7 +1,7 @@
 const { getProducts, getCustomers, getOrders, getTaxRates } = require("./data");
 const { processOrder, calculateSubtotal } = require("./orders");
 const { findProductByName, lowStockProducts, categorySummary } = require("./reports");
-const { isNonEmptyString, findProductById, findCustomerById, validateOrder } = require("./validators");
+const { couponDiscountAmount, bulkDiscountAmount, loyaltyDiscountAmount, applyDiscounts } = require("./discounts");
 
 function check(condition, message) {
   if (!condition) {
@@ -15,6 +15,24 @@ function main() {
   const orders = getOrders();
   const taxRates = getTaxRates();
 
+  check(couponDiscountAmount("SAVE10", 100) === 90, "SAVE10 coupon should give 10 percent discount");
+  check(couponDiscountAmount("FIVEOFF", 100) === 95, "FIVEOFF coupon should give $5 discount");
+  check(bulkDiscountAmount([
+        { productId: "P102", quantity: 10 },
+        { productId: "P103", quantity: 2 }
+      ], products) === 2.45, "Bulk discount should be 7% of line total for items equal to threshold"); 
+      check(bulkDiscountAmount([
+        { productId: "P101", quantity: 5 },
+        { productId: "P103", quantity: 2 }
+      ], products) === 0, "Bulk discount should not be applied for items below threshold");
+      
+    check(loyaltyDiscountAmount({ id: "C001", name: "Alice Carter", state: "NJ", loyalty: true }, 100) === 5, "Loyalty discount should be 5% of subtotal for loyal customers");
+    check(loyaltyDiscountAmount({ id: "C001", name: "Alice Carter", state: "NJ", loyalty: false }, 100) === 0, "Loyalty discount should not be applied for non-loyal customers");
+
+    check(applyDiscounts(orders[1], customers[0], products, 45.5).discountedSubtotal === 36.02, "Discounted subtotal should be correct after applying all discounts");
+
+  check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
+  check(findProductByName(products, "MOUSE"), "Search should ignore case");
 
   // check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
   // check(findProductByName(products, "MOUSE"), "Search should ignore case");
