@@ -24,7 +24,10 @@ function main() {
       check(bulkDiscountAmount([
         { productId: "P101", quantity: 5 },
         { productId: "P103", quantity: 2 }
-      ], products) === 0, "Bulk discount should not be applied for items below threshold"); 
+      ], products) === 0, "Bulk discount should not be applied for items below threshold");
+      
+    check(loyaltyDiscountAmount({ id: "C001", name: "Alice Carter", state: "NJ", loyalty: true }, 100) === 5, "Loyalty discount should be 5% of subtotal for loyal customers");
+    check(loyaltyDiscountAmount({ id: "C001", name: "Alice Carter", state: "NJ", loyalty: false }, 100) === 0, "Loyalty discount should not be applied for non-loyal customers");
 
   check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
   check(findProductByName(products, "MOUSE"), "Search should ignore case");

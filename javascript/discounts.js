@@ -37,7 +37,9 @@ function bulkDiscountAmount(items, products) {
 }
 
 function loyaltyDiscountAmount(customer, subtotalAfterCoupon) {
-  return subtotalAfterCoupon * LOYALTY_RATE;
+  if(customer.loyalty !== true) return 0;
+  
+  else return subtotalAfterCoupon * LOYALTY_RATE;
 }
 
 function applyDiscounts(order, customer, products, subtotal) {
