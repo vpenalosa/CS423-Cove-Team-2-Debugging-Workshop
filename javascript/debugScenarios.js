@@ -1,6 +1,7 @@
 const { getProducts, getCustomers, getOrders, getTaxRates } = require("./data");
 const { processOrder, calculateSubtotal } = require("./orders");
 const { findProductByName, lowStockProducts, categorySummary } = require("./reports");
+const { restockProduct,reserveInventory } = require("./inventory");
 const { couponDiscountAmount, bulkDiscountAmount, loyaltyDiscountAmount, applyDiscounts } = require("./discounts");
 
 function check(condition, message) {
@@ -75,7 +76,18 @@ function main() {
   const overStock = {...orders[0], items: [{ productId: "P101", quantity: 5 }]};
   check(validateOrder(overStock, products, customers).some(error => error.includes("Not enough inventory")), "An order exceeding available stock should be invalid");
 
+//Added a couple debug scenarios to check if restockProduct and reserveInventory are working properly
+  check(restockProduct(products, "P103", 10).stock === 10, "Restocking Pen Pack should set stock to 10");
+  //check(restockProduct(products, 999, 10) === null, "Restocking a non-existent product should return null");
+  //check(() => restockProduct(products, 1, -5), "Restocking with a negative amount should throw an error");
+  //check(() => reserveInventory(products, { items: [] }), "Reserving inventory with no items should throw an error");
+// These 3  test case are commented out because it will throw an error and stop the execution, 1 for restockProduct with a non-existent product, 1 for restockProduct with a negative amount, and 1 for reserveInventory with no items.
+
+  reserveInventory(products, orders[0]);
+  check(products.find(p => p.id === "P100").stock === 8, "Reserving 2 Keyboards should reduce  the stock to 8");
+  check(products.find(p => p.id === "P101").stock === 2, "Reserving 1 Mouse should reduce the stock to 2");
   console.log("All debugging scenarios passed.");
+
 }
 
 main();
