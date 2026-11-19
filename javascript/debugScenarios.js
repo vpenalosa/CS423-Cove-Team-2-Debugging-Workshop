@@ -1,6 +1,7 @@
 const { getProducts, getCustomers, getOrders, getTaxRates } = require("./data");
 const { processOrder, calculateSubtotal } = require("./orders");
 const { findProductByName, lowStockProducts, categorySummary } = require("./reports");
+const { restockProduct,reserveInventory } = require("./inventory");
 
 function check(condition, message) {
   if (!condition) {
@@ -13,6 +14,7 @@ function main() {
   const customers = getCustomers();
   const orders = getOrders();
   const taxRates = getTaxRates();
+
 
   check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
   check(findProductByName(products, "MOUSE"), "Search should ignore case");
@@ -35,7 +37,11 @@ function main() {
   const invalidResult = processOrder(orders[1], products, customers, taxRates);
   check(invalidResult.valid === false, "Order 1002 should be invalid because Pen Pack is out of stock");
 
+//Added two debug scenarios to check if restockProduct and reserveInventory are working properly
+  check(restockProduct(products, 3, 10).stock === 10, "Restocking Pen Pack should set stock to 10");
+  check(reserveInventory(products, orders[0]).find(p => p.id === 1).stock === 8, "Reserving 2 Keyboards should reduce  the stock to 8");
   console.log("All debugging scenarios passed.");
+  
 }
 
 main();
