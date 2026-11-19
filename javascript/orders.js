@@ -38,8 +38,12 @@ function processOrder(order, products, customers, taxRates) {
   const shipping = calculateShipping(subtotal);
 
   const total = discounts.discountedSubtotal + tax + shipping;
-
-  reserveInventory(products, order);
+ 
+    try {
+    reserveInventory(products, order);
+  } catch(err) {
+    return { orderId: order.id, valid: false, errors: [err.message] };
+  }
 
   return {
     orderId: order.id,
