@@ -17,13 +17,15 @@ function calculateSubtotal(order, products) {
     subtotal += product.price * item.quantity; // Fix 1
   }
 
-  return Number(subtotal.toFixed(2));
+  // return Number(subtotal.toFixed(2));
+  return subtotal; // Fix 2
 }
 
 function calculateTax(customer, discountedSubtotal, taxRates) {
   const state = customer.state || "NJ";
   const rate = taxRates[state] || 0.07;
-  return Number((discountedSubtotal * rate).toFixed(2));
+  // return Number((discountedSubtotal * rate).toFixed(2));
+  return discountedSubtotal * rate; // Fix 2
 }
 
 function calculateShipping(discountedSubtotal) {
