@@ -42,6 +42,8 @@ function main() {
   check(restockProduct(products, 999, 10) === null, "Restocking a non-existent product should return null");
   check(() => restockProduct(products, 1, -5), "Restocking with a negative amount should throw an error");
   
+  check(() => reserveInventory(products, { items: [] }), "Reserving inventory with no items should throw an error");
+  
   check(reserveInventory(products, orders[0]).find(p => p.id === 1).stock === 8, "Reserving 2 Keyboards should reduce  the stock to 8");
   check(reserveInventory(products, orders[0]).find(p => p.id === 2).stock === 2, "Reserving 1 Mouse should reduce the stock to 2");
   console.log("All debugging scenarios passed.");

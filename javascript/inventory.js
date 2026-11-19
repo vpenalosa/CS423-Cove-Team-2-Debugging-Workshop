@@ -1,9 +1,12 @@
 
 function reserveInventory(products, order) {
   for (const item of order.items) {
+    if(order.items.length === 0) {
+      throw new Error('Order has no items');
+    }
     const product = products.find(p => p.id === item.productId);
     if(product.stock === 0) {
-      throw new Error('Product ${product.id} is out of stock');
+      throw new Error(`Product ${product.id} is out of stock`);
     }// Fix 1 Check to see if the product is out of stock, and if it is and they ordered it, throw an error
     else if (product) 
       {
