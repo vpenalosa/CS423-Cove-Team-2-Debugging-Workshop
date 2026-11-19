@@ -22,8 +22,11 @@ function calculateSubtotal(order, products) {
 }
 
 function calculateTax(customer, discountedSubtotal, taxRates) {
-  const state = customer.state || "NJ";
-  const rate = taxRates[state] || 0.07;
+  // const state = customer.state || "NJ";
+  // const rate = taxRates[state] || 0.07;
+
+  const rate = taxRates[customer.state] ?? 0; // Fix 3
+
   // return Number((discountedSubtotal * rate).toFixed(2));
   return discountedSubtotal * rate; // Fix 2
 }
