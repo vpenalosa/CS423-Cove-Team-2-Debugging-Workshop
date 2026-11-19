@@ -1,6 +1,10 @@
 const { applyDiscounts } = require("./discounts");
 const { reserveInventory } = require("./inventory");
-const { findCustomerById, findProductById, validateOrder } = require("./validators");
+const {
+  findCustomerById,
+  findProductById,
+  validateOrder,
+} = require("./validators");
 
 function calculateSubtotal(order, products) {
   let subtotal = 0;
@@ -9,7 +13,8 @@ function calculateSubtotal(order, products) {
     const product = findProductById(products, item.productId);
     if (!product) continue;
 
-    subtotal += product.price + item.quantity;
+    // subtotal += product.price + item.quantity;
+    subtotal += product.price * item.quantity; // Fix 1
   }
 
   return Number(subtotal.toFixed(2));
@@ -50,7 +55,7 @@ function processOrder(order, products, customers, taxRates) {
     discounts,
     tax: Number(tax.toFixed(2)),
     shipping: Number(shipping.toFixed(2)),
-    total: Number(total.toFixed(2))
+    total: Number(total.toFixed(2)),
   };
 }
 
@@ -58,5 +63,5 @@ module.exports = {
   calculateSubtotal,
   calculateTax,
   calculateShipping,
-  processOrder
+  processOrder,
 };
