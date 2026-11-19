@@ -15,6 +15,8 @@ function main() {
   const orders = getOrders();
   const taxRates = getTaxRates();
 
+  const lowNames = lowStockProducts(products, 5).map(p => p.name);
+  check(lowNames.includes("Pen Pack"), "Low-stock report should include out-of-stock products");
   check(couponDiscountAmount("SAVE10", 100) === 90, "SAVE10 coupon should give 10 percent discount");
   check(couponDiscountAmount("FIVEOFF", 100) === 95, "FIVEOFF coupon should give $5 discount");
   check(bulkDiscountAmount([
@@ -60,6 +62,13 @@ function main() {
   check(!isNonEmptyString(123), "isNonEmptyString should return false for non-string values");
   check(!isNonEmptyString("            "), "isNonEmptyString should return false for whitespace-only strings");
 
+  const invalidResult = processOrder(orders[1], products, customers, taxRates);
+  check(invalidResult.valid === false, "Order 1002 should be invalid because Pen Pack is out of stock");
+  
+  // fixed by teammates
+
+  check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
+  check(findProductByName(products, "MOUSE"), "Search should ignore case");
   check(findProductById(products, "P100").name === "Keyboard", "findProductById should return the correct product");
   check(findCustomerById(customers, "C001").name === "Alice Carter", "findCustomerById should return the correct customer");
   check(validateOrder(orders[0], products, customers), "Order 1001 should be valid");
