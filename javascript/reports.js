@@ -22,8 +22,8 @@ function categorySummary(products) {
       };
     }
 
-    summary[product.category].productCount += product.stock;
-    summary[product.category].totalStock += 1;
+    summary[product.category].totalStock += product.stock;
+    summary[product.category].productCount += 1;
   }
 
   return summary;
