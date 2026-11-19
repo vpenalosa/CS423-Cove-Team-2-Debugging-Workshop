@@ -1,6 +1,12 @@
+// NOTE: had to make a new branch because my old one was not organized - this is the official branch and I had to re-copy all my fixes
+
 const { applyDiscounts } = require("./discounts");
 const { reserveInventory } = require("./inventory");
-const { findCustomerById, findProductById, validateOrder } = require("./validators");
+const {
+  findCustomerById,
+  findProductById,
+  validateOrder,
+} = require("./validators");
 
 function calculateSubtotal(order, products) {
   let subtotal = 0;
@@ -9,16 +15,22 @@ function calculateSubtotal(order, products) {
     const product = findProductById(products, item.productId);
     if (!product) continue;
 
-    subtotal += product.price + item.quantity;
+    // subtotal += product.price + item.quantity;
+    subtotal += product.price * item.quantity; // Fix 1
   }
 
-  return Number(subtotal.toFixed(2));
+  // return Number(subtotal.toFixed(2));
+  return subtotal; // Fix 2
 }
 
 function calculateTax(customer, discountedSubtotal, taxRates) {
-  const state = customer.state || "NJ";
-  const rate = taxRates[state] || 0.07;
-  return Number((discountedSubtotal * rate).toFixed(2));
+  // const state = customer.state || "NJ";
+  // const rate = taxRates[state] || 0.07;
+
+  const rate = taxRates[customer.state] ?? 0; // Fix 3
+
+  // return Number((discountedSubtotal * rate).toFixed(2));
+  return discountedSubtotal * rate; // Fix 2
 }
 
 function calculateShipping(discountedSubtotal) {
@@ -34,8 +46,10 @@ function processOrder(order, products, customers, taxRates) {
 
   const subtotal = calculateSubtotal(order, products);
   const discounts = applyDiscounts(order, customer, products, subtotal);
-  const tax = calculateTax(customer, subtotal, taxRates);
-  const shipping = calculateShipping(subtotal);
+  // const tax = calculateTax(customer, subtotal, taxRates);
+  const tax = calculateTax(customer, discounts.discountedSubtotal, taxRates); // Fix 4
+  // const shipping = calculateShipping(subtotal);
+  const shipping = calculateShipping(discounts.discountedSubtotal); // Fix 5
 
   const total = discounts.discountedSubtotal + tax + shipping;
 
@@ -50,7 +64,7 @@ function processOrder(order, products, customers, taxRates) {
     discounts,
     tax: Number(tax.toFixed(2)),
     shipping: Number(shipping.toFixed(2)),
-    total: Number(total.toFixed(2))
+    total: Number(total.toFixed(2)),
   };
 }
 
@@ -58,5 +72,5 @@ module.exports = {
   calculateSubtotal,
   calculateTax,
   calculateShipping,
-  processOrder
+  processOrder,
 };
