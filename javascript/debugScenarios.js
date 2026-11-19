@@ -15,6 +15,7 @@ function main() {
   const taxRates = getTaxRates();
 
   check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
+  console.log(findProductByName(products, "  keyboard "));
   check(findProductByName(products, "MOUSE"), "Search should ignore case");
 
   const lowNames = lowStockProducts(products, 5).map(p => p.name);
