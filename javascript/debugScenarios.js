@@ -14,8 +14,17 @@ function main() {
   const customers = getCustomers();
   const orders = getOrders();
   const taxRates = getTaxRates();
+
   check(couponDiscountAmount("SAVE10", 100) === 90, "SAVE10 coupon should give 10 percent discount");
   check(couponDiscountAmount("FIVEOFF", 100) === 95, "FIVEOFF coupon should give $5 discount");
+  check(bulkDiscountAmount([
+        { productId: "P102", quantity: 10 },
+        { productId: "P103", quantity: 2 }
+      ], products) === 2.45, "Bulk discount should be 7% of line total for items equal to threshold"); 
+      check(bulkDiscountAmount([
+        { productId: "P101", quantity: 5 },
+        { productId: "P103", quantity: 2 }
+      ], products) === 0, "Bulk discount should not be applied for items below threshold"); 
 
   check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
   check(findProductByName(products, "MOUSE"), "Search should ignore case");
