@@ -3,7 +3,7 @@ function findProductByName(products, name) {
 }
 
 function lowStockProducts(products, threshold = 5) {
-  return products.filter(product => product.stock < threshold && product.stock > 0);
+  return products.filter(product => product.stock < threshold);
 }
 
 function productsSortedByPrice(products) {
