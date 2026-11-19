@@ -1,3 +1,5 @@
+// NOTE: had to make a new branch because my old one was not organized - this is the official branch and I had to re-copy all my fixes
+
 const { applyDiscounts } = require("./discounts");
 const { reserveInventory } = require("./inventory");
 const {
