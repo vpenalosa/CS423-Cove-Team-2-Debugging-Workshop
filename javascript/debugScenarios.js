@@ -1,7 +1,7 @@
 const { getProducts, getCustomers, getOrders, getTaxRates } = require("./data");
 const { processOrder, calculateSubtotal } = require("./orders");
 const { findProductByName, lowStockProducts, categorySummary } = require("./reports");
-const { couponDiscountAmount, bulkDiscountAmount, loyaltyDiscountAmount, applyDiscount } = require("./discounts");
+const { couponDiscountAmount, bulkDiscountAmount, loyaltyDiscountAmount, applyDiscounts } = require("./discounts");
 
 function check(condition, message) {
   if (!condition) {
@@ -28,6 +28,8 @@ function main() {
       
     check(loyaltyDiscountAmount({ id: "C001", name: "Alice Carter", state: "NJ", loyalty: true }, 100) === 5, "Loyalty discount should be 5% of subtotal for loyal customers");
     check(loyaltyDiscountAmount({ id: "C001", name: "Alice Carter", state: "NJ", loyalty: false }, 100) === 0, "Loyalty discount should not be applied for non-loyal customers");
+
+    check(applyDiscounts(orders[1], customers[0], products, 45.5).discountedSubtotal === 36.02, "Discounted subtotal should be correct after applying all discounts");
 
   check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
   check(findProductByName(products, "MOUSE"), "Search should ignore case");

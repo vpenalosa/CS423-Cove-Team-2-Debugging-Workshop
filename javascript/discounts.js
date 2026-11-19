@@ -44,12 +44,12 @@ function loyaltyDiscountAmount(customer, subtotalAfterCoupon) {
 
 function applyDiscounts(order, customer, products, subtotal) {
   const couponDiscount = couponDiscountAmount(order.coupon, subtotal);
-  const subtotalAfterCoupon = subtotal - couponDiscount;
+//   const subtotalAfterCoupon = subtotal - couponDiscount;
 
-  const loyaltyDiscount = loyaltyDiscountAmount(customer, subtotal);
+  const loyaltyDiscount = loyaltyDiscountAmount(customer, couponDiscount);
   const bulkDiscount = bulkDiscountAmount(order.items || [], products);
 
-  const discountedSubtotal = subtotalAfterCoupon - loyaltyDiscount - bulkDiscount;
+  const discountedSubtotal = couponDiscount - loyaltyDiscount - bulkDiscount;
 
   return {
     couponDiscount: Number(couponDiscount.toFixed(2)),
