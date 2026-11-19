@@ -17,8 +17,10 @@ function restockProduct(products, productId, amount) {
   if (!product) {
     return null;
   }
-
-  product.stock = amount;
+  if(amount < 0) {
+    throw new Error('Restock amount cannot be negative');
+  }
+  product.stock += amount;
   return product;
 }
 
