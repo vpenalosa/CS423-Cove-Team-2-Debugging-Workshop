@@ -40,8 +40,8 @@ function validateOrder(order, products, customers) {
 
     if (typeof item.quantity !== "number") {
       errors.push(`Invalid quantity for ${product.name}`);
-    } else if (item.quantity < 0) {
-      errors.push(`Quantity must be positive for ${product.name}`);
+    } else if (item.quantity < 1) {
+      errors.push(`Quantity must be a positive whole number for ${product.name}`);
     }
 
     if (item.quantity && product.stock < 1) {
