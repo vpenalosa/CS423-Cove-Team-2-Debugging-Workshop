@@ -14,9 +14,6 @@ function main() {
   const orders = getOrders();
   const taxRates = getTaxRates();
 
-  check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
-  check(findProductByName(products, "MOUSE"), "Search should ignore case");
-
   const lowNames = lowStockProducts(products, 5).map(p => p.name);
   check(lowNames.includes("Pen Pack"), "Low-stock report should include out-of-stock products");
 
@@ -34,6 +31,11 @@ function main() {
 
   const invalidResult = processOrder(orders[1], products, customers, taxRates);
   check(invalidResult.valid === false, "Order 1002 should be invalid because Pen Pack is out of stock");
+  
+  // fixed by teammates
+
+  check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
+  check(findProductByName(products, "MOUSE"), "Search should ignore case");
 
   console.log("All debugging scenarios passed.");
 }
