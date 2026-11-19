@@ -37,11 +37,13 @@ function main() {
   const invalidResult = processOrder(orders[1], products, customers, taxRates);
   check(invalidResult.valid === false, "Order 1002 should be invalid because Pen Pack is out of stock");
 
-//Added two debug scenarios to check if restockProduct and reserveInventory are working properly
+//Added 4 debug scenarios to check if restockProduct and reserveInventory are working properly
   check(restockProduct(products, 3, 10).stock === 10, "Restocking Pen Pack should set stock to 10");
+  check(restockProduct(products, 999, 10) === null, "Restocking a non-existent product should return null");
   check(reserveInventory(products, orders[0]).find(p => p.id === 1).stock === 8, "Reserving 2 Keyboards should reduce  the stock to 8");
+  check(reserveInventory(products, orders[0]).find(p => p.id === 2).stock === 2, "Reserving 1 Mouse should reduce the stock to 2");
   console.log("All debugging scenarios passed.");
-  
+
 }
 
 main();

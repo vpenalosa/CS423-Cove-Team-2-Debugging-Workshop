@@ -7,7 +7,7 @@ function reserveInventory(products, order) {
     }// Fix 1 Check to see if the product is out of stock, and if it is and they ordered it, throw an error
     else if (product) 
       {
-      product.stock -= 1; 
+      product.stock -= item.quantity; // Fix 2 Reduce the amount of stock by the amount ordered 
     }
   }
 }
