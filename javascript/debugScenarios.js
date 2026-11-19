@@ -1,6 +1,7 @@
 const { getProducts, getCustomers, getOrders, getTaxRates } = require("./data");
 const { processOrder, calculateSubtotal } = require("./orders");
 const { findProductByName, lowStockProducts, categorySummary } = require("./reports");
+const { couponDiscountAmount, bulkDiscountAmount, loyaltyDiscountAmount, applyDiscount } = require("./discounts");
 
 function check(condition, message) {
   if (!condition) {
@@ -13,6 +14,8 @@ function main() {
   const customers = getCustomers();
   const orders = getOrders();
   const taxRates = getTaxRates();
+  check(couponDiscountAmount("SAVE10", 100) === 90, "SAVE10 coupon should give 10 percent discount");
+  check(couponDiscountAmount("FIVEOFF", 100) === 95, "FIVEOFF coupon should give $5 discount");
 
   check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
   check(findProductByName(products, "MOUSE"), "Search should ignore case");
