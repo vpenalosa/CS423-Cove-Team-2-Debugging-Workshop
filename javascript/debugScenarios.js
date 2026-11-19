@@ -35,6 +35,7 @@ function main() {
     check(applyDiscounts(orders[1], customers[0], products, 45.5).discountedSubtotal === 36.02, "Discounted subtotal should be correct after applying all discounts");
 
   check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");
+  console.log(findProductByName(products, "  keyboard "));
   check(findProductByName(products, "MOUSE"), "Search should ignore case");
 
   // check(findProductByName(products, "  keyboard "), "Search should trim and ignore case");

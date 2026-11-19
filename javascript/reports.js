@@ -1,5 +1,5 @@
 function findProductByName(products, name) {
-  return products.find(product => product.name.toLowerCase() === name);
+  return products.find(product => product.name.toLowerCase() === name.trim().toLowerCase());
 }
 
 function lowStockProducts(products, threshold = 5) {
