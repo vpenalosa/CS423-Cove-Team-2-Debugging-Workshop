@@ -1,5 +1,5 @@
 function isNonEmptyString(value) {
-  return typeof value === "string" && value.length > 0;
+  return typeof value === "string" && value.trim().length > 0;
 }
 
 function findProductById(products, productId) {
@@ -44,7 +44,7 @@ function validateOrder(order, products, customers) {
       errors.push(`Quantity must be a positive whole number for ${product.name}`);
     }
 
-    if (item.quantity && product.stock < 1) {
+    if (typeof item.quantity === "number" && item.quantity > product.stock) {
       errors.push(`Not enough inventory for ${product.name}`);
     }
   }

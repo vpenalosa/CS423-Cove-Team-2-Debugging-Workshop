@@ -45,6 +45,8 @@ function main() {
   check(findProductById(products, "P100").name === "Keyboard", "findProductById should return the correct product");
   check(findCustomerById(customers, "C001").name === "Alice Carter", "findCustomerById should return the correct customer");
   check(validateOrder(orders[0], products, customers), "Order 1001 should be valid");
+  const overStock = {...orders[0], items: [{ productId: "P101", quantity: 5 }]};
+  check(validateOrder(overStock, products, customers).some(error => error.includes("Not enough inventory")), "An order exceeding available stock should be invalid");
 
   console.log("All debugging scenarios passed.");
 }
